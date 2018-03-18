@@ -1,6 +1,7 @@
 package com.system.tracking.trackingsystem;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +21,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+
 public class MainActivity extends AppCompatActivity {
     private Button changePassword;
     private Button changeDistance;
@@ -34,6 +45,12 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, NotifyAssaultService.class);
         startService(intent);
         verifyPermission();
+
+        try {
+            deviceConnectionTest();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         changePassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +72,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, ChangePhoneInfoActivity.class));
             }
         });
+    }
+
+    private void deviceConnectionTest() throws IOException {
+        URL url = null;
+        url = new URL("http://192.168.43.186/SIGNAL");
+        new LoadHtml().execute(url);
     }
 
     private void initializeVariables() {
@@ -88,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     private void askForPermission(String permission, Integer requestCode) {
         if (ContextCompat.checkSelfPermission(MainActivity.this, permission) != PackageManager.PERMISSION_GRANTED) {
 
@@ -104,6 +128,49 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             Toast.makeText(this, "" + permission + " is already granted.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private class LoadHtml extends AsyncTask<URL, Void, Void> {
+
+        @Override
+        protected Void doInBackground(URL... urls) {
+            try {
+                HttpURLConnection connection = null;
+                InputStream stream = null;
+                String result = null;
+                connection = (HttpURLConnection) urls[0].openConnection();
+                connection.setReadTimeout(3000);
+                connection.setConnectTimeout(3000);
+                connection.setRequestMethod("GET");
+                connection.setDoInput(true);
+                connection.connect();
+                stream = connection.getInputStream();
+                result = readStream(stream, 500);
+                Log.i("MainActivity", result);
+                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        public String readStream(InputStream stream, int maxReadSize)
+                throws IOException, UnsupportedEncodingException {
+            Reader reader = null;
+            reader = new InputStreamReader(stream, "UTF-8");
+            char[] rawBuffer = new char[maxReadSize];
+            int readSize;
+            StringBuffer buffer = new StringBuffer();
+            while (((readSize = reader.read(rawBuffer)) != -1) && maxReadSize > 0) {
+                if (readSize > maxReadSize) {
+                    readSize = maxReadSize;
+                }
+                buffer.append(rawBuffer, 0, readSize);
+                maxReadSize -= readSize;
+            }
+            return buffer.toString();
         }
     }
 }

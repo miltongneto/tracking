@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">Tracking System</string>
+    <string name="app_name">Trust</string>
+    <string name="distance_config_file">com.system.tracking.trackingsystem.distance_config_file</string>
+    <string name="distance_config_key">distance_key</string>
+    <string name="password_config_file">com.system.tracking.trackingsystem.password_config_file</string>
+    <string name="password_config_key">password_key</string>
+    <string name="phone_info_config_file">com.system.tracking.trackingsystem.phone_info_config_file</string>
+    <string name="phone_number_config_key">phone_number_key</string>
+    <string name="phone_brand_config_key">phone_brand_key</string>
+    <string name="phone_value_config_key">phone_value_key</string>
 </resources>

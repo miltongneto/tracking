@@ -30,6 +30,10 @@
             android:name=".NotifyAssaultService"
             android:exported="false" />
 
+        <service
+            android:name=".services.SafeService"
+            android:exported="false" />
+
         <receiver
             android:name=".RestartServiceBroadcast"
             android:enabled="true"

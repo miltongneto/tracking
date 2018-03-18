@@ -27,7 +27,7 @@ public class ChangeDistanceActivity extends AppCompatActivity {
         initializeVariables();
 
         SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.distance_config_file), Context.MODE_PRIVATE);
-        int defaultValue = 0;
+        int defaultValue = 10;
         int currentProgress = sharedPreferences.getInt(getString(R.string.distance_config_key), defaultValue);
         seekBar.setProgress(currentProgress);
 

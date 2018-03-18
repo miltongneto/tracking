@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -11,10 +12,11 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.system.tracking.trackingsystem.enums.TrackingState;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -74,6 +76,20 @@ public class NotifyAssaultService extends IntentService implements LocationListe
         intent.putExtra(EXTRA_PARAM1, param1);
         intent.putExtra(EXTRA_PARAM2, param2);
         context.startService(intent);
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.tracking_state_file), Context.MODE_PRIVATE);
+        Integer trackingState = sharedPreferences.getInt(getString(R.string.tracking_state_key), TrackingState.SAFE.getCode());
+
+        //SharedPreferences.Editor editor = trackingState.edit();
+        //editor.putString(getString(R.string.phone_number_config_key), pNumber);
+        //editor.putString(getString(R.string.phone_brand_config_key), pBrand);
+        //editor.putString(getString(R.string.phone_value_config_key), pValue);
+        //editor.commit();
     }
 
     @Override

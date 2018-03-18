@@ -8,4 +8,7 @@
     <string name="phone_number_config_key">phone_number_key</string>
     <string name="phone_brand_config_key">phone_brand_key</string>
     <string name="phone_value_config_key">phone_value_key</string>
+    <string name="tracking_state_file">com.system.tracking.trackingsystem.tracking_state_file</string>
+    <string name="tracking_state_key">tracking_state_key</string>
+
 </resources>

@@ -80,7 +80,6 @@ public class NotifyAssaultService extends IntentService implements LocationListe
     protected void onHandleIntent(Intent intent) {
         loadLocation();
         if (intent != null) {
-            Log.i("NotifyAssaultService", "teste");
             final String action = intent.getAction();
             if (ACTION_FOO.equals(action)) {
                 final String param1 = intent.getStringExtra(EXTRA_PARAM1);
@@ -109,19 +108,23 @@ public class NotifyAssaultService extends IntentService implements LocationListe
         } else {
             lManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 0, this);
             Location l = lManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            Log.i("NotifyAssaultService", String.valueOf(l.getLatitude()) + " " + String.valueOf(l.getLongitude()));
-            Geocoder geocoder = new Geocoder(this, new Locale("pt", "BR"));
-            List<Address> addresses = new ArrayList<Address>();
-            try {
-                addresses = geocoder.getFromLocation(l.getLatitude(), l.getLongitude(), 3);
-            } catch (IOException e) {
-                e.printStackTrace();
+
+            if(l != null) {
+                Log.i("NotifyAssaultService", String.valueOf(l.getLatitude()) + " " + String.valueOf(l.getLongitude()));
+                Geocoder geocoder = new Geocoder(this, new Locale("pt", "BR"));
+                List<Address> addresses = new ArrayList<Address>();
+                try {
+                    addresses = geocoder.getFromLocation(l.getLatitude(), l.getLongitude(), 3);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                for(Address address : addresses) {
+                    String str = address.getAddressLine(0);
+                    Log.i("NotifyAssaultService", str);
+                }
             }
 
-            for(Address address : addresses) {
-                String str = address.getAddressLine(0);
-                Log.i("NotifyAssaultService", str);
-            }
         }
 
     }
@@ -132,6 +135,9 @@ public class NotifyAssaultService extends IntentService implements LocationListe
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             lManager.removeUpdates(this);
         }
+        Intent restartService = new Intent();
+        restartService.setAction("RestartService");
+        sendBroadcast(restartService);
     }
 
     /**

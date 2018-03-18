@@ -3,7 +3,7 @@
     package="com.system.tracking.trackingsystem">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -12,7 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +22,18 @@
 
         <service
             android:name=".NotifyAssaultService"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <receiver
+            android:name=".RestartServiceBroadcast"
+            android:enabled="true"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="RestartService" />
+            </intent-filter>
+
+        </receiver>
     </application>
 
 </manifest>

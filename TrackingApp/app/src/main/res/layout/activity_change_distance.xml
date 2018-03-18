@@ -5,24 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.system.tracking.trackingsystem.MainActivity">
+    tools:context="com.system.tracking.trackingsystem.activities.ChangeDistanceActivity">
 
-    <Button
-        android:id="@+id/change_password"
+    <TextView
+        android:id="@+id/distance_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mudar a Senha"/>
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:padding="20px"
+        android:text="Distancia: 0 m"
+        />
 
-    <Button
-        android:id="@+id/change_distance"
+    <SeekBar
+        android:id="@+id/distance_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mudar a Distancia"/>
+        android:max="10"
+        />
 
     <Button
-        android:id="@+id/change_phone_info"
+        android:id="@+id/change_distance_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mudar os Dados do Celular"/>
+        android:text="Salvar"/>
 
 </LinearLayout>
